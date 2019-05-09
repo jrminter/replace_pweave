@@ -1,0 +1,111 @@
+---
+title: "Replace Pweave using Rmarkdown"
+author: "John Minter"
+date: "2019-05-09"
+output:
+  pdf_document:
+    fig_caption: true
+    number_sections: true
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: 2
+    fig_width: 5
+    fig_height: 5
+    highlight: tango
+    keep_tex: true
+  html_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+    highlight: tango
+
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fontspec}
+  - \usepackage{chngcntr}
+  - \setmainfont[BoldItalicFont={Times New Roman Bold Italic}]{DejaVu Sans}
+  - \counterwithin{figure}{section}
+  - \counterwithin{table}{section}
+geometry: left=0.75in,right=0.75in,top=0.75in,bottom=0.75in
+fontsize: 12pt
+urlcolor: blue
+theme: cerulean
+keep_md: true
+abstract: |
+  `Rmarkdown` has replaced `Sweave` for most documents. This document was
+  composed to mimic the test document developed by John Cook to highlight
+  reproducible docunments with `python` using `Sweave`. This Rmarkdown
+  document implements code cnks in both python and R to generate a PDF.
+  One needs to set the path to the python executable in the first chunk.
+  Inline python does not work, but we can use inline R to display python
+  results.
+---
+
+# Introduction
+
+In 2012 [John Cook](https://www.johndcook.com/blog/2012/12/20/basics-of-sweave-and-pweave/)
+explained how to make reproducible reports in Python using `Pweave` to process
+the code chunks. The entire document is composed in \LaTeX. 
+
+`Rmarkdown` in RStudio integrates an environment where most text is written in
+`markdown`.  \LaTeX is supported and is used mostly for mathematics. One can
+also use the same document to generate documents in PDF, HTML, and Word formats.
+The conversion is handled by `pandoc`. This document implements John Cook's
+exemplar in Rmarkdown.
+
+# Note the R setup chunk
+
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, comment=NA)
+library(reticulate)
+use_python("/Users/jrminter/miniconda3/bin/python")
+```
+
+The **r setup** chunk is used to configure R. It is frequently
+hidden. The `reticulate` does the heavy lifting for us, so we import the
+package in the **r setup** code chunk and supply the path to our python
+distribution. If we needed other R packages, we would load them there.
+
+
+
+# Import the python packages and functions
+
+```{python main_imports}
+import matplotlib.pyplot as plt
+from numpy import pi, linspace, sqrt, sin
+```
+
+# Implement John Cook's examples
+
+Code that sets the value of the variable $a$.
+
+```{python set_variable_a}
+a = 3.14
+```
+
+Visible code that sets $b$ and squares it.
+
+```{python set_variable_b}
+b = a**2
+print(b)
+```
+
+```{python calc_sqrt_2, echo=FALSE}
+sqrt_2 = sqrt(2.0)
+```
+
+Use hidden inline R to report Python results inline: $\sqrt{2} = `r py$sqrt_2`$
+by calling from python.
+
+Recalling the variable $a$ set above: a = `r py$a`.
+
+# Grapics are important
+
+Here is a figure
+
+```{python my_figure, fig.width=7, fig.height=5, fig.cap="A plot of $sin(x)$"}
+x = linspace(0, 6*pi, 200)
+plt.plot(x, sin(x))
+plt.show()
+```

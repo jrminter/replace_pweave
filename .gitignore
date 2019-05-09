@@ -2,6 +2,10 @@
 .Rhistory
 .Rapp.history
 
+# Save the Rmd and PDF files for those who wih to browse...
+replace_pweave_files/
+replace_pweave.tex
+
 # Session Data files
 .RData
 
