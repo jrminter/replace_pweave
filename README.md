@@ -10,4 +10,4 @@ the code chunks. The entire document is composed in LaTeX.
 also use the same document to generate documents in PDF, HTML, and Word formats.
 The conversion is handled by `pandoc`. The `.Rmd` file implements John Cook's
 exemplar in Rmarkdown. Using Rstudio (with pandoc) the document can be processed
-to PDF, HTML, or Word format.
+to PDF or HTML format.
